@@ -20,7 +20,8 @@ from rest_framework.status import (
 )
 from users.models import ContainerUser
 from users.serializers import ContainerUserSerializer
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ParseError
+from django.db.utils import IntegrityError
 
 
 class ContainerUserList(ListAPIView):
@@ -62,12 +63,15 @@ class ContainerUserCreate(CreateAPIView):
 
     def create(self, request):
         user_data = request.data
-        serializer = ContainerUserSerializer(data=user_data)
+        serializer = ContainerUserSerializer(data=user_data, partial=False)
         if serializer.is_valid(raise_exception=True):
-            serializer.create(serializer.data)
+            try:
+                serializer.create(serializer.data)
+            except IntegrityError:
+                raise ParseError('Not all fields were correctly given')
 
         return Response(dict(
-            details='User created'
+            detail='User created'
         ), status=HTTP_201_CREATED)
 
 
@@ -90,9 +94,9 @@ class ContainerUserUpdate(UpdateAPIView):
 
     def partial_update(self, request, pk=None):
         if pk is None:
-            user = self._get_object_by_pk(request.user.pk)
+            user = self._get_user_by_pk(request.user.pk)
         else:
-            user = self._get_object_by_pk(pk)
+            user = self._get_user_by_pk(pk)
 
         serializer = ContainerUserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -154,10 +158,10 @@ class ContainerUserDestroy(DestroyAPIView):
             user_obj.delete()
         except Exception as ex:
             return Response(dict(
-                details=f'Could not delete user: {repr(ex)}'
+                detail=f'Could not delete user: {repr(ex)}'
             ), status=HTTP_404_NOT_FOUND)
 
         return Response(dict(
-            details='User deleted',
+            detail='User deleted',
             profile=str(user_obj)
         ), status=HTTP_204_NO_CONTENT)
