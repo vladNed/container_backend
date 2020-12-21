@@ -34,8 +34,6 @@ class ContainerUserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
 
-        Token.objects.create(user=user)
-
         return user
 
     def create_user(self, email: str, password: str, **extra_fields) -> AbstractUser:
