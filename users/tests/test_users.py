@@ -36,17 +36,3 @@ def test_create_super_user():
     assert superuser.is_active is True
     assert superuser.is_staff is True
     assert superuser.is_admin is True
-
-
-def test_retrieve_user():
-    user = ContainerUser.objects.create_user(
-        email='some_user@email.com',
-        password='TestPassword123',
-        first_name='John',
-        last_name='Doe',
-        role=Roles.PROCESSOR
-    )
-
-    user_a = ContainerUser.objects.get(instance=user)
-
-    assert user_a is not None
