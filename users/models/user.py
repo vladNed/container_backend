@@ -5,8 +5,6 @@ from django.contrib.auth.hashers import make_password
 
 from users.models.constants import ROLE_TYPES
 
-from rest_framework.authtoken.models import Token
-
 
 class ContainerUserManager(BaseUserManager):
     use_in_migrations = True
