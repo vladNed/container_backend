@@ -1,6 +1,7 @@
 from users import views
 from django.urls import path
 
+app_name = 'users'
 urlpatterns = [
     path('users/', views.ContainerUserList.as_view(), name='users-list'),
     path('users/', views.ContainerUserRetrieve.as_view(), name='user-get'),
