@@ -1,0 +1,4 @@
+[flake8]
+exclude = __init__.py,migrations
+max-line-length = 160
+max-complexity = 10
