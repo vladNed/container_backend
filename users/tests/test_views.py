@@ -25,6 +25,22 @@ def admin_user() -> ContainerUser:
 
 
 @pytest.fixture
+def refresh_token(authenticated_admin, admin_user):
+    data = {
+        'email': admin_user.email,
+        'password': 'TestPassword123'
+    }
+
+    response = authenticated_admin.post(
+        path=reverse('token-pair'),
+        data=data,
+        format='json'
+    )
+
+    return response.json().get('refresh', None)
+
+
+@pytest.fixture
 def authenticated_admin(api_client, admin_user: ContainerUser):
     api_client.force_authenticate(user=admin_user)
     yield api_client
@@ -49,3 +65,34 @@ def test_list_not_authenticated(random_user):
 
     assert response.status_code == 401
     assert 'profiles' not in response.json()
+
+
+def test_user_token_retrieve(authenticated_admin, admin_user):
+    data = {
+        'email': admin_user.email,
+        'password': 'TestPassword123'
+    }
+
+    response = authenticated_admin.post(
+        path=reverse('token-pair'),
+        data=data,
+        format='json'
+    )
+
+    assert response.status_code == 200
+    assert all(key in response.json() for key in ('refresh', 'access'))
+
+
+def test_user_refresh_token_retrieve(authenticated_admin, refresh_token):
+    data = {
+        'refresh': refresh_token
+    }
+
+    response = authenticated_admin.post(
+        reverse('token-refresh'),
+        data=data,
+        format='json'
+    )
+
+    assert response.status_code == 200
+    assert 'access' in response.json()
