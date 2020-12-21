@@ -1,17 +1,18 @@
 from django.contrib.auth import get_user_model
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from projects.serializers import ProjectUserSerializer
 
 ContainerUser = get_user_model()
 
 
-class ContainerUserSerializer(ModelSerializer):
+class ContainerUserSerializer(serializers.ModelSerializer):
     projects = ProjectUserSerializer(many=True, read_only=True)
 
     class Meta:
         model = ContainerUser
-        fields = '__all__'
+        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'data_joined', 'is_active',
+                  'role', 'projects')
 
     def create(self, validated_data):
         return ContainerUser.objects.create_user(**validated_data)
