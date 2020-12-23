@@ -5,8 +5,6 @@ from django.contrib.auth.hashers import make_password
 
 from users.models.constants import ROLE_TYPES
 
-from rest_framework.authtoken.models import Token
-
 
 class ContainerUserManager(BaseUserManager):
     use_in_migrations = True
@@ -33,8 +31,6 @@ class ContainerUserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
-
-        Token.objects.create(user=user)
 
         return user
 

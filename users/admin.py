@@ -10,7 +10,7 @@ class ContainerUser(admin.ModelAdmin):
         'email', 'role', 'password',
         ('is_active', 'is_staff')
     )
-    list_display = ('pk', 'name', 'email', 'role', 'is_active', 'is_staff')
+    list_display = ('name', 'pk', 'email', 'role', 'is_active', 'is_staff')
 
     def name(self, obj):
         return f"{obj.first_name} {obj.last_name}"

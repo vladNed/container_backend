@@ -27,6 +27,7 @@ PREFIX = 'api/v2/'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(PREFIX, include('users.urls')),
+    path(PREFIX, include('projects.urls')),
     path(f'{PREFIX}token/', TokenObtainPairView.as_view(), name='token-pair'),
     path(f'{PREFIX}token/refresh/', TokenRefreshView.as_view(), name='token-refresh')
 ]
