@@ -21,5 +21,5 @@ PREFIX = 'api/v2/'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(PREFIX, include('users.urls'))
+    path(PREFIX, include('users.urls', namespace='users'))
 ]
