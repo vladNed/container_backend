@@ -27,6 +27,22 @@ def admin_user() -> ContainerUser:
 
 
 @pytest.fixture
+def refresh_token(authenticated_admin, admin_user):
+    data = {
+        'email': admin_user.email,
+        'password': 'TestPassword123'
+    }
+
+    response = authenticated_admin.post(
+        path=reverse('token-pair'),
+        data=data,
+        format='json'
+    )
+
+    return response.json().get('refresh', None)
+
+
+@pytest.fixture
 def container_user() -> ContainerUser:
     '''
     Create a container user

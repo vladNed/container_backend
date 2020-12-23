@@ -17,9 +17,16 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView
+)
+
 PREFIX = 'api/v2/'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(PREFIX, include('users.urls', namespace='users'))
+    path(PREFIX, include('users.urls')),
+    path(f'{PREFIX}token/', TokenObtainPairView.as_view(), name='token-pair'),
+    path(f'{PREFIX}token/refresh/', TokenRefreshView.as_view(), name='token-refresh')
 ]

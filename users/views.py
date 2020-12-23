@@ -6,6 +6,7 @@ from rest_framework.generics import (
     DestroyAPIView
 )
 from rest_framework.authentication import BasicAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser
@@ -31,7 +32,7 @@ class ContainerUserList(ListAPIView):
 
     queryset = ContainerUser.objects.all()
     serializer_class = ContainerUserSerializer
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser, ]
 
     def list(self, request):
@@ -57,7 +58,7 @@ class ContainerUserCreate(CreateAPIView):
     Note: Only accessible by admin users
     '''
 
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser, ]
 
     def create(self, request):
@@ -80,7 +81,7 @@ class ContainerUserUpdate(UpdateAPIView):
     '''
 
     serializer_class = ContainerUserSerializer
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated, ]
 
     def _get_user_by_pk(self, user_pk: int) -> ContainerUser:
@@ -111,7 +112,7 @@ class ContainerUserRetrieve(RetrieveAPIView):
     Retrieves user profile
     '''
 
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated, ]
 
     def _get_user_by_pk(self, user_pk: int) -> ContainerUser:
@@ -140,7 +141,7 @@ class ContainerUserDestroy(DestroyAPIView):
     Note: Only accesible by an admin user
     '''
 
-    authentication_classes = [BasicAuthentication, ]
+    authentication_classes = [BasicAuthentication, JWTAuthentication]
     permission_classes = [IsAuthenticated, ]
 
     def _get_user_by_pk(self, user_pk: int) -> ContainerUser:
