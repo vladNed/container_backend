@@ -1,5 +1,7 @@
 ## Container Backend v2.0
 
+![build](https://github.com/vladNed/container_backend/workflows/Python%application/badge.svg)
+
 The new update of the Container Backend API.
 
 Changes that will occur:
