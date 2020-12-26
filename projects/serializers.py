@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from projects.models import ProjectUser, Project
+from document_units.serializers import DocumentUnitSerializer
 
 
 class ProjectUserSerializer(serializers.ModelSerializer):
@@ -11,6 +12,7 @@ class ProjectUserSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     users = ProjectUserSerializer(many=True, read_only=True)
+    documents = DocumentUnitSerializer(many=True, read_only=True)
 
     class Meta:
         model = Project
